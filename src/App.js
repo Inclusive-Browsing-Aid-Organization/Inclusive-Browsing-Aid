@@ -1,10 +1,9 @@
-import './App.css';
-
+import SwitchesGroup from './components/SwitchesGroup'
 
 function App() {
   return (
     <div className="App">
-      <h1>Hello</h1>
+      <SwitchesGroup/>
     </div>
   );
 }
