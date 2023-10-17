@@ -12,7 +12,7 @@ function App() {
   };
 
   return (
-    <div className="bg-timberWolf rounded-lg shadow-md">
+    <div className="bg-timberWolf rounded-lg shadow-md ">
       <Header/>
       <SwitchesGroup/>
       <Footer/>
