@@ -1,42 +1,48 @@
 import React, { useState } from 'react';
-
-import Switch from './switch/Switch'
+import { Switch, FormGroup, FormControlLabel } from '@mui/material';
+import SeizureSwitch from './switches/SeizureSwitch';
 
 const SwitchesGroup = () => {
-    const [switch1, setSwitch1] = useState(true);
-    const [switch2, setSwitch2] = useState(true);
-    const [switch3, setSwitch3] = useState(true);
-    const [switch4, setSwitch4] = useState(true);
-    const [switch5, setSwitch5] = useState(true);
-  
-    return (
-    <div className='p-2 flex flex-col justify-center items-center'>
-      <div className="mb-2 flex items-center justify-between">
-        <Switch isOn={switch1} handleToggle={() => setSwitch1(!switch1)} color="#6C698D" />
-      <label className="block text-ultraViolet text-sm font-bold ml-2">Switch 1</label>
-      </div>
+  const [switchState1, setSwitchState1] = useState(false);
+  const [switchState2, setSwitchState2] = useState(false);
+  const [switchState3, setSwitchState3] = useState(false);
+  const [switchState4, setSwitchState4] = useState(false);
+  const [switchState5, setSwitchState5] = useState(false);
 
-      <div className="mb-2 flex items-center justify-between">
-        <Switch isOn={switch2} handleToggle={() => setSwitch2(!switch2)} color="#6E6271" />
-        <label className="block text-ultraViolet text-sm font-bold ml-2">Switch 2</label>
-      </div>
-      
-      <div className="mb-2 flex items-center justify-between">
-        <Switch isOn={switch3} handleToggle={() => setSwitch3(!switch3)} color="#BFAFA6" />
-        <label className="block text-ultraViolet text-sm font-bold ml-2">Switch 3</label>
-      </div>
-      
-      <div className="mb-2 flex items-center justify-between">
-        <Switch isOn={switch4} handleToggle={() => setSwitch4(!switch4)} color="#AA968A" />
-        <label className="block text-ultraViolet text-sm font-bold ml-2">Switch 4</label>
-      </div>
-      
-      <div className="mb-2 flex items-center justify-between">
-        <Switch isOn={switch5} handleToggle={() => setSwitch5(!switch5)} color="#6E6A6F" />
-        <label className="block text-ultraViolet text-sm font-bold ml-2">Switch 5</label>
-      </div>
-    </div>
-    );
+  const handleChange = (event) => {
+    const { name, checked } = event.target;
+    switch (name) {
+      case 'switch1':
+        setSwitchState1(checked);
+        break;
+      case 'switch2':
+        setSwitchState2(checked);
+        break;
+      case 'switch3':
+        setSwitchState3(checked);
+        break;
+      case 'switch4':
+        setSwitchState4(checked);
+        break;
+      case 'switch5':
+        setSwitchState5(checked);
+        break;
+      default:
+        break;
+    }
   };
-  
-  export default SwitchesGroup;
+
+  return (
+    <div className='p-2 flex flex-col justify-center items-center'>
+      <FormGroup>
+        <SeizureSwitch/>
+        <FormControlLabel
+          control={<Switch checked={switchState1} onChange={handleChange} name="switch1" />}
+          label="Sample Switch"
+        />
+      </FormGroup>
+    </div>
+  );
+};
+
+export default SwitchesGroup;
