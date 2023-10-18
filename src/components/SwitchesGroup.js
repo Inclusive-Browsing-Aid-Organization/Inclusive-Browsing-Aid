@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Switch, FormGroup, FormControlLabel } from '@mui/material';
+
 import SeizureSwitch from './switches/SeizureSwitch';
+import BionicSwitch from './switches/BionicSwitch';
 
 const SwitchesGroup = () => {
   const [switchState1, setSwitchState1] = useState(false);
@@ -36,10 +38,7 @@ const SwitchesGroup = () => {
     <div className='p-2 flex flex-col justify-center items-center'>
       <FormGroup>
         <SeizureSwitch/>
-        <FormControlLabel
-          control={<Switch checked={switchState1} onChange={handleChange} name="switch1" />}
-          label="Sample Switch"
-        />
+        <BionicSwitch/>
       </FormGroup>
     </div>
   );
