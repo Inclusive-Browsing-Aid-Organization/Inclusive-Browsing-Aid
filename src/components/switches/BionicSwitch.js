@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -18,16 +18,16 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
       '& .MuiSwitch-thumb:before': {
         backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
           '#fff',
-        )}" d="M15.41 16.59 10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>')`,
+        )}" d="M11.59 7.41 15.17 11H1v2h14.17l-3.59 3.59L13 18l6-6-6-6-1.41 1.41zM20 6v12h2V6h-2z"/></svg>')`,
       },
       '& + .MuiSwitch-track': {
         opacity: 1,
-        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+        backgroundColor: '#aab4be',
       },
     },
   },
   '& .MuiSwitch-thumb': {
-    backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
+    backgroundColor: '#d23370',
     width: 32,
     height: 32,
     '&:before': {
@@ -41,23 +41,40 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
       backgroundPosition: 'center',
       backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
         '#fff',
-      )}" d="M11.59 7.41 15.17 11H1v2h14.17l-3.59 3.59L13 18l6-6-6-6-1.41 1.41zM20 6v12h2V6h-2z"/></svg>')`,
+      )}" d="M15.41 16.59 10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>')`,
     },
   },
   '& .MuiSwitch-track': {
     opacity: 1,
-    backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+    backgroundColor: '#aab4be',
     borderRadius: 20 / 2,
   },
 }));
 
 export default function BionicSwitch() {
+  const [isChecked, setIsChecked] = useState(false);
+  const [labelColor, setLabelColor] = useState('#a0a0a0');  // dimmer color for "off" state
+  const [divOpacity, setDivOpacity] = useState(0.5);  // dimmer opacity for "off" state
+  
+  useEffect(() => {
+    setLabelColor(isChecked ? '#fcfcfd' : '#a0a0a0');  // bright when "on", dim when "off"
+    setDivOpacity(isChecked ? 1 : 0.5);  // fully visible when "on", half-opacity when "off"
+  }, [isChecked]);
+
   return (
-    <FormGroup>
-      <FormControlLabel
-        control={<MaterialUISwitch sx={{ m: 1 }} />}
-        label="Bionic Reading"
-      />
-    </FormGroup>
+    <div class="border border-white" style={{ opacity: divOpacity }}>
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <MaterialUISwitch 
+              sx={{ m: 1 }} 
+              checked={isChecked} 
+              onChange={() => setIsChecked(!isChecked)} 
+            />
+          }
+          label={<span style={{color: labelColor}}>{`Bionic Reading ${isChecked ? 'ON' : 'OFF'}`}</span>}
+        />
+      </FormGroup>
+    </div>
   );
 }

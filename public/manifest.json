@@ -8,7 +8,8 @@
         "default_title": "main dashboard"
     },
     "permissions":[
-        "scripting"
+        "scripting",
+        ["activeTab"]
     ],
     "host_permissions": [
         "https://*/",
