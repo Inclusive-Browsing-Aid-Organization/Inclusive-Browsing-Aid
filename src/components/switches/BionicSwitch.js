@@ -1,8 +1,12 @@
+/* global chrome */
+
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+
+import { makeFirstThreeLettersBold, removeBold } from '../../utils/bionicReadifyPage';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -61,6 +65,20 @@ export default function BionicSwitch() {
     setDivOpacity(isChecked ? 1 : 0.5);  // fully visible when "on", half-opacity when "off"
   }, [isChecked]);
 
+  const handleToggle = () => {
+    const newIsChecked = !isChecked;
+    setIsChecked(newIsChecked); 
+  
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const codeToExecute = newIsChecked ? makeFirstThreeLettersBold : removeBold;
+
+      chrome.scripting.executeScript({
+        target: { tabId: tabs[0].id },
+        func: codeToExecute,
+      });
+    });
+  }  
+
   return (
     <div class="border border-white" style={{ opacity: divOpacity }}>
       <FormGroup>
@@ -69,7 +87,7 @@ export default function BionicSwitch() {
             <MaterialUISwitch 
               sx={{ m: 1 }} 
               checked={isChecked} 
-              onChange={() => setIsChecked(!isChecked)} 
+              onChange={() => handleToggle()} 
             />
           }
           label={<span style={{color: labelColor}}>{`Bionic Reading ${isChecked ? 'ON' : 'OFF'}`}</span>}
