@@ -3,14 +3,24 @@
     "name": "Inclusive Browsing Aid",
     "version": "1.0",
     "description": "A simple Chrome extension.",
+    "default_locale": "en",
     "action" : {
         "default_popup": "index.html",
         "default_title": "main dashboard"
     },
     "permissions":[
         "scripting",
-        "activeTab"
+        "activeTab",
+        "webRequest",
+        "webRequestBlocking",
+        "fontSettings",
+        "<all_urls>"
     ],
+    "background":{
+        "scripts": [
+            "background.js"
+        ]
+    },
     "host_permissions": [
         "https://*/",
         "http://*/"
