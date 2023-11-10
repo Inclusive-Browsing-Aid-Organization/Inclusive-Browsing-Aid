@@ -81,8 +81,6 @@ export default function FontSwitch() {
     });
   }  
     
-  }  
-
   return (
     <div class="border border-white" style={{ opacity: divOpacity }}>
       <FormGroup>
