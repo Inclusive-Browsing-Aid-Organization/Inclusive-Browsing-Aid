@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import { changeFontBack, makeFontAccessible } from '../../utils/accessibleFont';
 
 //import { makeFirstThreeLettersBold, removeBold } from '../../utils/bionicReadifyPage';
 //make own imports
@@ -70,7 +71,15 @@ export default function FontSwitch() {
     const newIsChecked = !isChecked;
     setIsChecked(newIsChecked); 
   
-    //switch needs to do something here
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const codeToExecute = newIsChecked ? makeFontAccessible : changeFontBack;
+
+      chrome.scripting.executeScript({
+        target: { tabId: tabs[0].id },
+        func: codeToExecute,
+      });
+    });
+  }  
     
   }  
 
