@@ -5,10 +5,8 @@ import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { changeFontBack, makeFontAccessible } from '../../utils/accessibleFont';
 
-//import { makeFirstThreeLettersBold, removeBold } from '../../utils/bionicReadifyPage';
-//make own imports
+import { makeFontAccessible, changeFontBack } from '../../utils/accessibleFont';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
