@@ -1,8 +1,12 @@
+/* global chrome */
+
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+
+import { disableAllTimeouts, locationreload } from '../../utils/seizure';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -16,9 +20,9 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
       color: '#fff',
       transform: 'translateX(22px)',
       '& .MuiSwitch-thumb:before': {
-        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
+        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
           '#fff',
-        )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
+        )}" d="M11.59 7.41 15.17 11H1v2h14.17l-3.59 3.59L13 18l6-6-6-6-1.41 1.41zM20 6v12h2V6h-2z"/></svg>')`,
       },
       '& + .MuiSwitch-track': {
         opacity: 1,
@@ -39,14 +43,14 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
       top: 0,
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
-      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
         '#fff',
-      )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>')`,
+      )}" d="M15.41 16.59 10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>')`,
     },
   },
   '& .MuiSwitch-track': {
     opacity: 1,
-    backgroundColor:'#aab4be',
+    backgroundColor: '#aab4be',
     borderRadius: 20 / 2,
   },
 }));
@@ -61,6 +65,20 @@ export default function SeizureSwitch() {
     setDivOpacity(isChecked ? 1 : 0.5);  // fully visible when "on", half-opacity when "off"
   }, [isChecked]);
 
+  const handleToggle = () => {
+    const newIsChecked = !isChecked;
+    setIsChecked(newIsChecked); 
+  
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const codeToExecute = newIsChecked ? disableAllTimeouts : locationreload;
+
+      chrome.scripting.executeScript({
+        target: { tabId: tabs[0].id },
+        func: codeToExecute,
+      });
+    });
+  }  
+
   return (
     <div class="border border-white" style={{ opacity: divOpacity }}>
       <FormGroup>
@@ -69,7 +87,7 @@ export default function SeizureSwitch() {
             <MaterialUISwitch 
               sx={{ m: 1 }} 
               checked={isChecked} 
-              onChange={() => setIsChecked(!isChecked)} 
+              onChange={() => handleToggle()} 
             />
           }
           label={<span style={{color: labelColor}}>{`Seizure Safety ${isChecked ? 'ON' : 'OFF'}`}</span>}
@@ -78,4 +96,3 @@ export default function SeizureSwitch() {
     </div>
   );
 }
-
