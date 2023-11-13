@@ -3,6 +3,7 @@ import { Switch, FormGroup, FormControlLabel } from '@mui/material';
 
 import SeizureSwitch from './switches/SeizureSwitch';
 import BionicSwitch from './switches/BionicSwitch';
+import ContrastSwitch from './switches/ContrastSwitch';
 import FontSwitch from './switches/FontSwitch';
 
 const SwitchesGroup = () => {
@@ -40,6 +41,7 @@ const SwitchesGroup = () => {
       <FormGroup>
         <SeizureSwitch/>
         <BionicSwitch/>
+        <ContrastSwitch/>
         <FontSwitch/>
       </FormGroup>
     </div>

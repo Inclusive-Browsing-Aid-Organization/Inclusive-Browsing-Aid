@@ -6,7 +6,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
-import { disableAllTimeouts, locationreload } from '../../utils/seizure';
+import { contrastPage, contrastReload } from '../../utils/fixColorContrast';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -55,7 +55,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function SeizureSwitch() {
+export default function ContrastSwitch() {
   const [isChecked, setIsChecked] = useState(false);
   const [labelColor, setLabelColor] = useState('#a0a0a0');  // dimmer color for "off" state
   const [divOpacity, setDivOpacity] = useState(0.5);  // dimmer opacity for "off" state
@@ -70,7 +70,7 @@ export default function SeizureSwitch() {
     setIsChecked(newIsChecked); 
   
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const codeToExecute = newIsChecked ? disableAllTimeouts : locationreload;
+      const codeToExecute = newIsChecked ? contrastPage : contrastReload;
 
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id },
@@ -90,7 +90,7 @@ export default function SeizureSwitch() {
               onChange={() => handleToggle()} 
             />
           }
-          label={<span style={{color: labelColor}}>{`Seizure Safety ${isChecked ? 'ON' : 'OFF'}`}</span>}
+          label={<span style={{color: labelColor}}>{`Color Contrast ${isChecked ? 'ON' : 'OFF'}`}</span>}
         />
       </FormGroup>
     </div>
