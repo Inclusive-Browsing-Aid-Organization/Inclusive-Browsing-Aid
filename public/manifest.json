@@ -9,7 +9,11 @@
     },
     "permissions":[
         "scripting",
-        "activeTab"
+        "activeTab",
+        "webRequest",
+        "webRequestBlocking",
+        "fontSettings",
+        "<all_urls>"
     ],
     "host_permissions": [
         "https://*/",
