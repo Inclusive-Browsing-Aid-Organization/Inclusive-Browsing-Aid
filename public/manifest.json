@@ -14,5 +14,11 @@
     "host_permissions": [
         "https://*/",
         "http://*/"
-    ]
+    ],
+    "icons": {
+        "16": "logoInv16.png",
+        "32": "logoInv32.png",
+        "48": "logoInv48.png",
+        "128": "logoInv128.png"
+    }
   }

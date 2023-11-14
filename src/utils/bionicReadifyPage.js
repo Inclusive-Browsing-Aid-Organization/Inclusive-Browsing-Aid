@@ -23,7 +23,6 @@ export function makeFirstThreeLettersBold() {
       }
     }
   }
-
   traverseAndBold(document.body);
 }
 
@@ -47,8 +46,6 @@ export function removeBold() {
       }
     });
   }
-  
-
   traverseAndUnbold(document.body);
 }
 
