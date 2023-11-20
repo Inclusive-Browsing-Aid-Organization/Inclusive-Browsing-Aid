@@ -11,6 +11,7 @@
         "scripting",
         "activeTab",
         "webRequest",
+        "tts",
         "webRequestBlocking",
         "fontSettings",
         "<all_urls>"

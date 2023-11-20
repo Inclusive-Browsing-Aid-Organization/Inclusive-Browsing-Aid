@@ -5,6 +5,7 @@ import SeizureSwitch from './switches/SeizureSwitch';
 import BionicSwitch from './switches/BionicSwitch';
 import ContrastSwitch from './switches/ContrastSwitch';
 import FontSwitch from './switches/FontSwitch';
+import SpeechSwitch from './switches/TextToSpeech';
 
 const SwitchesGroup = () => {
   const [switchState1, setSwitchState1] = useState(false);
@@ -43,6 +44,7 @@ const SwitchesGroup = () => {
         <BionicSwitch/>
         <ContrastSwitch/>
         <FontSwitch/>
+        <SpeechSwitch/>
       </FormGroup>
     </div>
   );
