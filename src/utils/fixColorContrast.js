@@ -45,7 +45,7 @@ export function contrastPage() {
 }
 
 export function contrastReload() {
-  window.location.reload();
+  //window.location.reload();
   //alert("reload");
   /*
   function unboldTextNode(spanNode) {

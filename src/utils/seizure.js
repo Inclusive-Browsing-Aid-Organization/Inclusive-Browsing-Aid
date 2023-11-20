@@ -1,5 +1,4 @@
 /*
- * https://www.moodlight.org/
  * https://flashing-colors.com/
  * https://stackoverflow.com/questions/3847121/how-can-i-disable-all-settimeout-events
  * var highestTimeoutId = setTimeout(";");
