@@ -5,7 +5,8 @@ import SeizureSwitch from './switches/SeizureSwitch';
 import BionicSwitch from './switches/BionicSwitch';
 import ContrastSwitch from './switches/ContrastSwitch';
 import FontSwitch from './switches/FontSwitch';
-
+import CaptionSwitch from './switches/CaptionSwitch';
+import SpeechSwitch from './switches/TextToSpeech';
 
 const SwitchesGroup = () => {
   const [switchState1, setSwitchState1] = useState(false);
@@ -13,6 +14,7 @@ const SwitchesGroup = () => {
   const [switchState3, setSwitchState3] = useState(false);
   const [switchState4, setSwitchState4] = useState(false);
   const [switchState5, setSwitchState5] = useState(false);
+  const [switchState6, setSwitchState6] = useState(false);
 
   const handleChange = (event) => {
     const { name, checked } = event.target;
@@ -32,6 +34,9 @@ const SwitchesGroup = () => {
       case "switch5":
         setSwitchState5(checked);
         break;
+      case "switch6":
+        setSwitchState6(checked);
+        break;
       default:
         break;
     }
@@ -44,7 +49,8 @@ const SwitchesGroup = () => {
         <BionicSwitch/>
         <ContrastSwitch/>
         <FontSwitch/>
-        
+        <CaptionSwitch/>
+        <SpeechSwitch/>
       </FormGroup>
     </div>
   );
