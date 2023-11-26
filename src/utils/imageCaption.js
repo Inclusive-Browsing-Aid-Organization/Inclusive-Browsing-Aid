@@ -13,5 +13,9 @@ export function makeCaptions() {
 }
 
 export function removeCaptions() {
-  window.location.reload();
+  const captions = document.querySelectorAll(".image-caption-extension");
+
+  captions.forEach((caption) => {
+    caption.parentNode.removeChild(caption);
+  });
 }

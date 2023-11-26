@@ -1,29 +1,26 @@
 {
-    "manifest_version": 3,
-    "name": "Inclusive Browsing Aid",
-    "version": "1.0",
-    "description": "A simple Chrome extension.",
-    "action" : {
-        "default_popup": "index.html",
-        "default_title": "main dashboard"
-    },
-    "permissions":[
-        "scripting",
-        "activeTab",
-        "webRequest",
-        "tts",
-        "webRequestBlocking",
-        "fontSettings",
-        "<all_urls>"
-    ],
-    "host_permissions": [
-        "https://*/",
-        "http://*/"
-    ],
-    "icons": {
-        "16": "logoInv16.png",
-        "32": "logoInv32.png",
-        "48": "logoInv48.png",
-        "128": "logoInv128.png"
-    }
+  "manifest_version": 3,
+  "name": "Inclusive Browsing Aid",
+  "version": "1.0",
+  "description": "A simple Chrome extension.",
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "main dashboard"
+  },
+  "permissions": [
+    "scripting",
+    "activeTab",
+    "webRequest",
+    "tts",
+    "webRequestBlocking",
+    "fontSettings",
+    "<all_urls>"
+  ],
+  "host_permissions": ["https://*/", "http://*/"],
+  "icons": {
+    "16": "logoInv16.png",
+    "32": "logoInv32.png",
+    "48": "logoInv48.png",
+    "128": "logoInv128.png"
   }
+}
