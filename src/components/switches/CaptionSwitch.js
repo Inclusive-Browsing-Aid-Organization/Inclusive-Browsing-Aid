@@ -6,7 +6,6 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 
-import { makeFontAccessible, changeFontBack } from "../../utils/accessibleFont";
 import { makeCaptions, removeCaptions } from "../../utils/imageCaption";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
