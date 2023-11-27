@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Switch, FormGroup, FormControlLabel } from "@mui/material";
+import { FormGroup } from "@mui/material";
 
 import SeizureSwitch from './switches/SeizureSwitch';
 import BionicSwitch from './switches/BionicSwitch';
@@ -9,39 +8,6 @@ import CaptionSwitch from './switches/CaptionSwitch';
 import SpeechSwitch from './switches/TextToSpeech';
 
 const SwitchesGroup = () => {
-  const [switchState1, setSwitchState1] = useState(false);
-  const [switchState2, setSwitchState2] = useState(false);
-  const [switchState3, setSwitchState3] = useState(false);
-  const [switchState4, setSwitchState4] = useState(false);
-  const [switchState5, setSwitchState5] = useState(false);
-  const [switchState6, setSwitchState6] = useState(false);
-
-  const handleChange = (event) => {
-    const { name, checked } = event.target;
-    switch (name) {
-      case "switch1":
-        setSwitchState1(checked);
-        break;
-      case "switch2":
-        setSwitchState2(checked);
-        break;
-      case "switch3":
-        setSwitchState3(checked);
-        break;
-      case "switch4":
-        setSwitchState4(checked);
-        break;
-      case "switch5":
-        setSwitchState5(checked);
-        break;
-      case "switch6":
-        setSwitchState6(checked);
-        break;
-      default:
-        break;
-    }
-  };
-
   return (
     <div className="p-2 flex flex-col justify-center items-center">
       <FormGroup>

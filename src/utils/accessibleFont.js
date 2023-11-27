@@ -1,7 +1,3 @@
-/* global chrome */
-
-let originalFont = chrome.fontSettings.getFont;
-
 export function makeFontAccessible() {
   const target = document.querySelectorAll("p");
 

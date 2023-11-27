@@ -9,8 +9,8 @@
  */
 
 export function disableAllTimeouts() {
-  	var highestTimeoutId = setTimeout(";");
-	for (var i = 0 ; i < highestTimeoutId ; i++) {
+  	var highestTimeoutId = setTimeout(function () {});
+	for (var i = 0 ; i <= highestTimeoutId ; i++) {
 		clearTimeout(i);
 	}
 }

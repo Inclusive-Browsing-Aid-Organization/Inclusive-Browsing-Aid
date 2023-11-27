@@ -9,7 +9,7 @@ const Footer = () => {
       >
         Help
       </a>
-      <a href="#" className="text-newhite hover:text-nepink">
+      <a href="https://github.com/Inclusive-Browsing-Aid-Organization/Inclusive-Browsing-Aid/issues" className="text-newhite hover:text-nepink">
         Feedback
       </a>
       <a
