@@ -56,21 +56,36 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function SpeechSwitch() {
-  const [isChecked, setIsChecked] = useState(false);
-  const [labelColor, setLabelColor] = useState('#a0a0a0');  // dimmer color for "off" state
-  const [divOpacity, setDivOpacity] = useState(0.5);  // dimmer opacity for "off" state
+  const [isCheckedTTS, setisCheckedTTS] = useState(false);
+  const [labelColorTTS, setlabelColorTTS] = useState('#a0a0a0');  // dimmer color for "off" state
+  const [divOpacityTTS, setdivOpacityTTS] = useState(0.5);  // dimmer opacity for "off" state
   
   useEffect(() => {
-    setLabelColor(isChecked ? '#fcfcfd' : '#a0a0a0');  // bright when "on", dim when "off"
-    setDivOpacity(isChecked ? 1 : 0.5);  // fully visible when "on", half-opacity when "off"
-  }, [isChecked]);
+    chrome.storage.local.get(['isCheckedTTS', 'labelColorTTS', 'divOpacityTTS'], function(result) {
+      if (result.isCheckedTTS !== undefined) {
+        setisCheckedTTS(result.isCheckedTTS);
+        setlabelColorTTS(result.labelColorTTS);
+        setdivOpacityTTS(result.divOpacityTTS);
+      }
+    });
+  }, []);
+  
+  useEffect(() => {
+    const newlabelColorTTS = isCheckedTTS ? '#fcfcfd' : '#a0a0a0';
+    const newdivOpacityTTS = isCheckedTTS ? 1 : 0.5;
+  
+    chrome.storage.local.set({ isCheckedTTS, labelColorTTS: newlabelColorTTS, divOpacityTTS: newdivOpacityTTS }, () => {
+      setlabelColorTTS(newlabelColorTTS);
+      setdivOpacityTTS(newdivOpacityTTS);
+    });
+  }, [isCheckedTTS]);
 
   const handleToggle = () => {
-    const newIsChecked = !isChecked;
-    setIsChecked(newIsChecked); 
+    const newisCheckedTTS = !isCheckedTTS;
+    setisCheckedTTS(newisCheckedTTS); 
   
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const codeToExecute = newIsChecked ? readTextContent : cancelReading;
+      const codeToExecute = newisCheckedTTS ? readTextContent : cancelReading;
 
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id },
@@ -80,17 +95,17 @@ export default function SpeechSwitch() {
   }  
 
   return (
-    <div class="border border-white" style={{ opacity: divOpacity }}>
+    <div class="border border-white" style={{ opacity: divOpacityTTS }}>
       <FormGroup>
         <FormControlLabel
           control={
             <MaterialUISwitch 
               sx={{ m: 1 }} 
-              checked={isChecked} 
+              checked={isCheckedTTS} 
               onChange={() => handleToggle()} 
             />
           }
-          label={<span style={{color: labelColor}}>{`Text To Speech ${isChecked ? 'ON' : 'OFF'}`}</span>}
+          label={<span style={{color: labelColorTTS}}>{`Text To Speech ${isCheckedTTS ? 'ON' : 'OFF'}`}</span>}
         />
       </FormGroup>
     </div>

@@ -56,21 +56,36 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function FontSwitch() {
-  const [isChecked, setIsChecked] = useState(false);
-  const [labelColor, setLabelColor] = useState('#a0a0a0');  // dimmer color for "off" state
-  const [divOpacity, setDivOpacity] = useState(0.5);  // dimmer opacity for "off" state
+  const [isCheckedFS, setisCheckedFS] = useState(false);
+  const [labelColorFS, setlabelColorFS] = useState('#a0a0a0');  // dimmer color for "off" state
+  const [divOpacityFS, setdivOpacityFS] = useState(0.5);  // dimmer opacity for "off" state
   
   useEffect(() => {
-    setLabelColor(isChecked ? '#fcfcfd' : '#a0a0a0');  // bright when "on", dim when "off"
-    setDivOpacity(isChecked ? 1 : 0.5);  // fully visible when "on", half-opacity when "off"
-  }, [isChecked]);
+    chrome.storage.local.get(['isCheckedFS', 'labelColorFS', 'divOpacityFS'], function(result) {
+      if (result.isCheckedFS !== undefined) {
+        setisCheckedFS(result.isCheckedFS);
+        setlabelColorFS(result.labelColorFS);
+        setdivOpacityFS(result.divOpacityFS);
+      }
+    });
+  }, []);
+  
+  useEffect(() => {
+    const newlabelColorFS = isCheckedFS ? '#fcfcfd' : '#a0a0a0';
+    const newdivOpacityFS = isCheckedFS ? 1 : 0.5;
+  
+    chrome.storage.local.set({ isCheckedFS, labelColorFS: newlabelColorFS, divOpacityFS: newdivOpacityFS }, () => {
+      setlabelColorFS(newlabelColorFS);
+      setdivOpacityFS(newdivOpacityFS);
+    });
+  }, [isCheckedFS]);
 
   const handleToggle = () => {
-    const newIsChecked = !isChecked;
-    setIsChecked(newIsChecked); 
+    const newisCheckedFS = !isCheckedFS;
+    setisCheckedFS(newisCheckedFS); 
   
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const codeToExecute = newIsChecked ? makeFontAccessible : changeFontBack;
+      const codeToExecute = newisCheckedFS ? makeFontAccessible : changeFontBack;
 
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id },
@@ -80,17 +95,17 @@ export default function FontSwitch() {
   }  
     
   return (
-    <div class="border border-white" style={{ opacity: divOpacity }}>
+    <div class="border border-white" style={{ opacity: divOpacityFS }}>
       <FormGroup>
         <FormControlLabel
           control={
             <MaterialUISwitch 
               sx={{ m: 1 }} 
-              checked={isChecked} 
+              checked={isCheckedFS} 
               onChange={() => handleToggle()} 
             />
           }
-          label={<span style={{color: labelColor}}>{`Accessible Font ${isChecked ? 'ON' : 'OFF'}`}</span>}
+          label={<span style={{color: labelColorFS}}>{`Accessible Font ${isCheckedFS ? 'ON' : 'OFF'}`}</span>}
         />
       </FormGroup>
     </div>

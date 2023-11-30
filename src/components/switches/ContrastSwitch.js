@@ -56,21 +56,36 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function ContrastSwitch() {
-  const [isChecked, setIsChecked] = useState(false);
-  const [labelColor, setLabelColor] = useState('#a0a0a0');  // dimmer color for "off" state
-  const [divOpacity, setDivOpacity] = useState(0.5);  // dimmer opacity for "off" state
+  const [isCheckedCO, setisCheckedCO] = useState(false);
+  const [labelColorCO, setlabelColorCO] = useState('#a0a0a0');  // dimmer color for "off" state
+  const [divOpacityCO, setdivOpacityCO] = useState(0.5);  // dimmer opacity for "off" state
   
   useEffect(() => {
-    setLabelColor(isChecked ? '#fcfcfd' : '#a0a0a0');  // bright when "on", dim when "off"
-    setDivOpacity(isChecked ? 1 : 0.5);  // fully visible when "on", half-opacity when "off"
-  }, [isChecked]);
+    chrome.storage.local.get(['isCheckedCO', 'labelColorCO', 'divOpacityCO'], function(result) {
+      if (result.isCheckedCO !== undefined) {
+        setisCheckedCO(result.isCheckedCO);
+        setlabelColorCO(result.labelColorCO);
+        setdivOpacityCO(result.divOpacityCO);
+      }
+    });
+  }, []);
+  
+  useEffect(() => {
+    const newlabelColorCO = isCheckedCO ? '#fcfcfd' : '#a0a0a0';
+    const newdivOpacityCO = isCheckedCO ? 1 : 0.5;
+  
+    chrome.storage.local.set({ isCheckedCO, labelColorCO: newlabelColorCO, divOpacityCO: newdivOpacityCO }, () => {
+      setlabelColorCO(newlabelColorCO);
+      setdivOpacityCO(newdivOpacityCO);
+    });
+  }, [isCheckedCO]);
 
   const handleToggle = () => {
-    const newIsChecked = !isChecked;
-    setIsChecked(newIsChecked); 
+    const newisCheckedCO = !isCheckedCO;
+    setisCheckedCO(newisCheckedCO); 
   
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const codeToExecute = newIsChecked ? contrastPage : contrastReload;
+      const codeToExecute = newisCheckedCO ? contrastPage : contrastReload;
 
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id },
@@ -80,17 +95,17 @@ export default function ContrastSwitch() {
   }  
 
   return (
-    <div class="border border-white" style={{ opacity: divOpacity }}>
+    <div class="border border-white" style={{ opacity: divOpacityCO }}>
       <FormGroup>
         <FormControlLabel
           control={
             <MaterialUISwitch 
               sx={{ m: 1 }} 
-              checked={isChecked} 
+              checked={isCheckedCO} 
               onChange={() => handleToggle()} 
             />
           }
-          label={<span style={{color: labelColor}}>{`Color Contrast ${isChecked ? 'ON' : 'OFF'}`}</span>}
+          label={<span style={{color: labelColorCO}}>{`Color Contrast ${isCheckedCO ? 'ON' : 'OFF'}`}</span>}
         />
       </FormGroup>
     </div>

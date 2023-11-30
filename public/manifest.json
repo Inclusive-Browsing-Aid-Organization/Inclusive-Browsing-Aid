@@ -14,7 +14,8 @@
     "tts",
     "webRequestBlocking",
     "fontSettings",
-    "<all_urls>"
+    "<all_urls>",
+    "storage"
   ],
   "host_permissions": ["https://*/", "http://*/"],
   "icons": {
