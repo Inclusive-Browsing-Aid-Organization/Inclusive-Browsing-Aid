@@ -56,21 +56,36 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function BionicSwitch() {
-  const [isChecked, setIsChecked] = useState(false);
-  const [labelColor, setLabelColor] = useState('#a0a0a0');  // dimmer color for "off" state
-  const [divOpacity, setDivOpacity] = useState(0.5);  // dimmer opacity for "off" state
+  const [isCheckedBS, setisCheckedBS] = useState(false);
+  const [labelColorBS, setlabelColorBS] = useState('#a0a0a0');  // dimmer color for "off" state
+  const [divOpacityBS, setdivOpacityBS] = useState(0.5);  // dimmer opacity for "off" state
+
+  useEffect(() => {
+    chrome.storage.local.get(['isCheckedBS', 'labelColorBS', 'divOpacityBS'], function(result) {
+      if (result.isCheckedBS !== undefined) {
+        setisCheckedBS(result.isCheckedBS);
+        setlabelColorBS(result.labelColorBS);
+        setdivOpacityBS(result.divOpacityBS);
+      }
+    });
+  }, []);
   
   useEffect(() => {
-    setLabelColor(isChecked ? '#fcfcfd' : '#a0a0a0');  // bright when "on", dim when "off"
-    setDivOpacity(isChecked ? 1 : 0.5);  // fully visible when "on", half-opacity when "off"
-  }, [isChecked]);
+    const newlabelColorBS = isCheckedBS ? '#fcfcfd' : '#a0a0a0';
+    const newdivOpacityBS = isCheckedBS ? 1 : 0.5;
+  
+    chrome.storage.local.set({ isCheckedBS, labelColorBS: newlabelColorBS, divOpacityBS: newdivOpacityBS }, () => {
+      setlabelColorBS(newlabelColorBS);
+      setdivOpacityBS(newdivOpacityBS);
+    });
+  }, [isCheckedBS]);
 
   const handleToggle = () => {
-    const newIsChecked = !isChecked;
-    setIsChecked(newIsChecked); 
+    const newisCheckedBS = !isCheckedBS;
+    setisCheckedBS(newisCheckedBS); 
   
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const codeToExecute = newIsChecked ? makeFirstThreeLettersBold : removeBold;
+      const codeToExecute = newisCheckedBS ? makeFirstThreeLettersBold : removeBold;
 
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id },
@@ -80,17 +95,17 @@ export default function BionicSwitch() {
   }  
 
   return (
-    <div class="border border-white" style={{ opacity: divOpacity }}>
+    <div class="border border-white" style={{ opacity: divOpacityBS }}>
       <FormGroup>
         <FormControlLabel
           control={
             <MaterialUISwitch 
               sx={{ m: 1 }} 
-              checked={isChecked} 
+              checked={isCheckedBS} 
               onChange={() => handleToggle()} 
             />
           }
-          label={<span style={{color: labelColor}}>{`Bionic Reading ${isChecked ? 'ON' : 'OFF'}`}</span>}
+          label={<span style={{color: labelColorBS}}>{`Bionic Reading ${isCheckedBS ? 'ON' : 'OFF'}`}</span>}
         />
       </FormGroup>
     </div>

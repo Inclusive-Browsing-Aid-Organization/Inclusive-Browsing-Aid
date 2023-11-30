@@ -56,21 +56,36 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function SeizureSwitch() {
-  const [isChecked, setIsChecked] = useState(false);
-  const [labelColor, setLabelColor] = useState('#a0a0a0');  // dimmer color for "off" state
-  const [divOpacity, setDivOpacity] = useState(0.5);  // dimmer opacity for "off" state
+  const [isCheckedSS, setisCheckedSS] = useState(false);
+  const [labelColorSS, setlabelColorSS] = useState('#a0a0a0');  // dimmer color for "off" state
+  const [divOpacitySS, setdivOpacitySS] = useState(0.5);  // dimmer opacity for "off" state
   
   useEffect(() => {
-    setLabelColor(isChecked ? '#fcfcfd' : '#a0a0a0');  // bright when "on", dim when "off"
-    setDivOpacity(isChecked ? 1 : 0.5);  // fully visible when "on", half-opacity when "off"
-  }, [isChecked]);
+    chrome.storage.local.get(['isCheckedSS', 'labelColorSS', 'divOpacitySS'], function(result) {
+      if (result.isCheckedSS !== undefined) {
+        setisCheckedSS(result.isCheckedSS);
+        setlabelColorSS(result.labelColorSS);
+        setdivOpacitySS(result.divOpacitySS);
+      }
+    });
+  }, []);
+  
+  useEffect(() => {
+    const newlabelColorSS = isCheckedSS ? '#fcfcfd' : '#a0a0a0';
+    const newdivOpacitySS = isCheckedSS ? 1 : 0.5;
+  
+    chrome.storage.local.set({ isCheckedSS, labelColorSS: newlabelColorSS, divOpacitySS: newdivOpacitySS }, () => {
+      setlabelColorSS(newlabelColorSS);
+      setdivOpacitySS(newdivOpacitySS);
+    });
+  }, [isCheckedSS]);
 
   const handleToggle = () => {
-    const newIsChecked = !isChecked;
-    setIsChecked(newIsChecked); 
+    const newisCheckedSS = !isCheckedSS;
+    setisCheckedSS(newisCheckedSS); 
   
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const codeToExecute = newIsChecked ? disableAllTimeouts : locationreload;
+      const codeToExecute = newisCheckedSS ? disableAllTimeouts : locationreload;
 
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id },
@@ -80,17 +95,17 @@ export default function SeizureSwitch() {
   }  
 
   return (
-    <div class="border border-white" style={{ opacity: divOpacity }}>
+    <div class="border border-white" style={{ opacity: divOpacitySS }}>
       <FormGroup>
         <FormControlLabel
           control={
             <MaterialUISwitch 
               sx={{ m: 1 }} 
-              checked={isChecked} 
+              checked={isCheckedSS} 
               onChange={() => handleToggle()} 
             />
           }
-          label={<span style={{color: labelColor}}>{`Seizure Safety ${isChecked ? 'ON' : 'OFF'}`}</span>}
+          label={<span style={{color: labelColorSS}}>{`Seizure Safety ${isCheckedSS ? 'ON' : 'OFF'}`}</span>}
         />
       </FormGroup>
     </div>
